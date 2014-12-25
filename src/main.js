@@ -14,7 +14,14 @@ define(function (require) {
 
     Emitter.mixin(exports);
 
-    function enter(options, presenter) {
+    /**
+     * 引导Presenter
+     *
+     * @inner
+     * @param {Object} options
+     * @param {Presenter} presenter
+     */
+    function boot(options, presenter) {
         var parseQuery = require('saber-uri/util/parse-query');
         var path = location.pathname;
         var query = parseQuery(location.search.substring(1));
@@ -55,14 +62,14 @@ define(function (require) {
     };
 
     /**
-     * 加载Presenter
+     * 启动Presenter
      *
      * @public
      * @param {Object} config
      * @param {Object=} options
      */
-    exports.load = function (config, options) {
-        mm.create(config).then(curry(enter, options));
+    exports.boot = function (config, options) {
+        mm.create(config).then(curry(boot, options));
     };
 
     return exports;
