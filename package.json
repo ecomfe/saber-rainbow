@@ -1,0 +1,20 @@
+{
+  "name": "saber-mm",
+  "version": "0.1.0",
+  "description": "MVP framework for multi-page",
+  "main": "main",
+  "maintainers": [
+    {
+      "name": "treelite",
+      "email": "c.xinle@gmail.com"
+    }
+  ],
+  "repository": "git://github.com/ecomfe/saber-rainbow.git",
+  "bugs": "https://github.com/ecomfe/saber-rainbow/issues",
+  "dependencies": {
+    "saber-lang": "~1.0.0",
+    "saber-emitter": "~1.0.0",
+    "saber-mm": "~0.1.0"
+  },
+  "license": "ISC"
+}
