@@ -34,7 +34,7 @@ define(function (require) {
         localStorage.setItem(KEY_STORAGE, JSON.stringify(this.todos));
     };
 
-    config.fetch = function (url, query) {
+    config.fetch = function (query, url) {
         var res = {};
         query = this.query = query || this.query;
         if (query && query.filter) {
