@@ -10,6 +10,11 @@ define(function (require) {
     var bind = require('saber-lang/bind');
     var curry = require('saber-lang/curry');
 
+    // 配置路由器
+    var router = require('saber-router');
+    router.controller(require('saber-router/controller/page'));
+    mm.config({router: router});
+
     var exports = {};
 
     Emitter.mixin(exports);
