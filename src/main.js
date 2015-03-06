@@ -1,6 +1,6 @@
 /**
  * @file main
- * @autor treelite(c.xinle@gmail.com)
+ * @author treelite(c.xinle@gmail.com)
  */
 
 define(function (require) {
@@ -9,6 +9,7 @@ define(function (require) {
     var Emitter = require('saber-emitter');
     var bind = require('saber-lang/bind');
     var curry = require('saber-lang/curry');
+    var extend = require('saber-lang/extend');
 
     // 配置路由器
     var router = require('saber-router');
@@ -20,11 +21,43 @@ define(function (require) {
     Emitter.mixin(exports);
 
     /**
+     * 全局配置项
+     *
+     * @type {Object}
+     */
+    var config = {
+        // 默认启动首屏渲染
+        renderFirst: true
+    };
+
+    /**
+     * 获取saber-mm需要的配置信息
+     *
+     * @inner
+     * @return {Object}
+     */
+    function getConfig4MM() {
+        var res = {};
+        var names = [
+            'template', 'templateConfig', 'templateData',
+            'Presenter', 'View', 'Model'
+        ];
+
+        names.forEach(function (name) {
+            if (config[name]) {
+                res[name] = config[name];
+            }
+        });
+
+        return res;
+    }
+
+    /**
      * 引导Presenter
      *
      * @inner
-     * @param {Object} options
-     * @param {Presenter} presenter
+     * @param {Object} options 跳转参数
+     * @param {Presenter} presenter Presenter对象
      */
     function boot(options, presenter) {
         var parseQuery = require('saber-uri/util/parse-query');
@@ -49,29 +82,44 @@ define(function (require) {
             exports.emit('error', reason);
         }
 
-        presenter
-            .enter(document.body, path, query, url, options)
-            .then(success, fail);
+        // 启动首渲染
+        if (config.renderFirst) {
+            presenter
+                .enter(document.body, path, query, url, options)
+                .then(success, fail);
+        }
+        else {
+            // 不再渲染首屏
+            presenter.set(path);
+            presenter.view.set(document.body);
+            success();
+        }
     }
 
     /**
      * 配置
      *
      * @public
-     * @param {Object} config
-     * @param {string|Array.<string>=} config.template 通用模版
-     * @param {Object=} config.templateConfig 模版引擎配置
+     * @param {Object} options 配置项
+     * @param {boolean=} options.renderFirst 是否启用首屏渲染，默认为启动
+     * @param {string|Array.<string>=} options.template 通用模版
+     * @param {Object=} options.templateConfig 模版引擎配置
+     * @param {Object=} options.templateData 通用模版静态数据
+     * @param {Function=} options.Presenter Presenter基类
+     * @param {Function=} options.View View基类
+     * @param {Function=} options.Model Model基类
      */
-    exports.config = function (config) {
-        mm.config(config);
+    exports.config = function (options) {
+        config = extend(config, options);
+        mm.config(getConfig4MM());
     };
 
     /**
      * 启动Presenter
      *
      * @public
-     * @param {Object} config
-     * @param {Object=} options
+     * @param {Object} config Presenter配置参数
+     * @param {Object=} options 附加参数
      */
     exports.boot = function (config, options) {
         mm.create(config).then(curry(boot, options));
