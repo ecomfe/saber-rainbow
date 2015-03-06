@@ -11,11 +11,6 @@ define(function (require) {
     var curry = require('saber-lang/curry');
     var extend = require('saber-lang/extend');
 
-    // 配置路由器
-    var router = require('saber-router');
-    router.controller(require('saber-router/controller/page'));
-    mm.config({router: router});
-
     var exports = {};
 
     Emitter.mixin(exports);
@@ -27,8 +22,26 @@ define(function (require) {
      */
     var config = {
         // 默认启动首屏渲染
-        renderFirst: true
+        renderFirst: true,
+
+        // 是否开启同构模式
+        isomorphic: false,
+
+        // 数据同步的key
+        syncDataKey: '__rebas__'
     };
+
+    /**
+     * 获取前后端同步的数据
+     *
+     * @inner
+     * @param {string=} name 数据名称
+     * @return {*}
+     */
+    function getSyncData(name) {
+        var store = extend({}, window[config.syncDataKey]);
+        return name ? store[name] : store;
+    }
 
     /**
      * 获取saber-mm需要的配置信息
@@ -60,6 +73,8 @@ define(function (require) {
      * @param {Presenter} presenter Presenter对象
      */
     function boot(options, presenter) {
+        // TODO
+        // Parse path params
         var parseQuery = require('saber-uri/util/parse-query');
         var path = location.pathname;
         var query = parseQuery(location.search.substring(1));
@@ -74,7 +89,7 @@ define(function (require) {
                 bind(presenter.leave, presenter),
                 false
             );
-            presenter.ready(true);
+            presenter.ready();
             presenter.complete();
         }
 
@@ -82,8 +97,11 @@ define(function (require) {
             exports.emit('error', reason);
         }
 
+        // 判断是否应该进行首屏渲染
+        var needRender = !config.isomorphic && config.renderFirst;
+
         // 启动首渲染
-        if (config.renderFirst) {
+        if (needRender) {
             presenter
                 .enter(document.body, path, query, url, options)
                 .then(success, fail);
@@ -92,6 +110,9 @@ define(function (require) {
             // 不再渲染首屏
             presenter.set(path);
             presenter.view.set(document.body);
+            if (config.isomorphic) {
+                presenter.model.fill(getSyncData('model'));
+            }
             success();
         }
     }
@@ -111,19 +132,36 @@ define(function (require) {
      */
     exports.config = function (options) {
         config = extend(config, options);
-        mm.config(getConfig4MM());
     };
 
     /**
      * 启动Presenter
      *
      * @public
-     * @param {Object} config Presenter配置参数
+     * @param {Object} presenter Presenter配置参数
      * @param {Object=} options 附加参数
      */
-    exports.boot = function (config, options) {
-        mm.create(config).then(curry(boot, options));
+    exports.boot = function (presenter, options) {
+        // 设置saber-mm
+        var config4mm = getConfig4MM();
+        var router = require('saber-router');
+        router.controller(require('saber-router/controller/page'));
+        config4mm.router = router;
+        // 扩展同步的模版静态数据
+        config4mm.templateData = extend({}, getSyncData('templateData'), config4mm.templateData);
+        mm.config(config4mm);
+
+        mm.create(presenter).then(curry(boot, options));
     };
+
+    /**
+     * 获取同步的数据
+     *
+     * @public
+     * @param {name=} 数据名称
+     * @return {*}
+     */
+    exports.getSyncData = getSyncData;
 
     return exports;
 
