@@ -9,8 +9,6 @@
       "email": "c.xinle@gmail.com"
     }
   ],
-  "repository": "git://github.com/ecomfe/saber-rainbow.git",
-  "bugs": "https://github.com/ecomfe/saber-rainbow/issues",
   "dependencies": {
     "saber-lang": "~2.0.0-alpha.1",
     "saber-emitter": "~2.0.0-alpha.1",
@@ -18,5 +16,7 @@
     "saber-mm": "~0.2.0",
     "saber-uri": "~1.0.4"
   },
+  "repository": "git://github.com/ecomfe/saber-rainbow.git",
+  "bugs": "https://github.com/ecomfe/saber-rainbow/issues",
   "license": "ISC"
 }
