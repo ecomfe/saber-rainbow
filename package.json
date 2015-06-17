@@ -18,5 +18,5 @@
   },
   "repository": "git://github.com/ecomfe/saber-rainbow.git",
   "bugs": "https://github.com/ecomfe/saber-rainbow/issues",
-  "license": "ISC"
+  "license": "MIT"
 }
