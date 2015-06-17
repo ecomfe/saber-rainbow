@@ -1,6 +1,8 @@
 saber-rainbow
 ===
 
+![Bower version](https://img.shields.io/bower/v/saber-rainbow.svg?style=flat-square) [![License](https://img.shields.io/npm/l/saber-rainbow.svg?style=flat-square)](./LICENSE) [![EFE Mobile Team](https://img.shields.io/badge/EFE-Mobile_Team-blue.svg?style=flat-square)](http://efe.baidu.com)
+
 多页面`MVP`框架
 
 ## Installation
