@@ -1,0 +1,30 @@
+{
+  "name": "saber-rainbow",
+  "version": "0.1.0",
+  "description": "MVP framework for multi-page",
+  "main": "main",
+  "maintainers": [
+    {
+      "name": "treelite",
+      "email": "c.xinle@gmail.com"
+    }
+  ],
+  "dependencies": {
+    "saber-lang": "~2.0.0-alpha.1",
+    "saber-emitter": "~2.0.0-alpha.1",
+    "saber-router": "~2.0.0-alpha.1",
+    "saber-mm": "~0.2.0",
+    "saber-uri": "~1.0.4"
+  },
+  "repository": "git://github.com/ecomfe/saber-rainbow.git",
+  "bugs": "https://github.com/ecomfe/saber-rainbow/issues",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "doc",
+    "demo"
+  ]
+}
