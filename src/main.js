@@ -167,7 +167,7 @@ define(function (require) {
         config4mm.templateData = extend({}, getSyncData('templateData'), config4mm.templateData);
         mm.config(config4mm);
 
-        // 启用路由器
+        // 配置并启动路由器
         path = path || location.pathname;
         router.add(path, routeTo(presenter, options));
 
