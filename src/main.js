@@ -139,7 +139,8 @@ define(function (require) {
      * @public
      * @param {Object} options 配置项
      * @param {HTMLElement} options.main 主元素
-     * @param {boolean=} options.renderFirst 是否启用首屏渲染，默认为启动
+     * @param {boolean=} options.renderFirst 是否启用首屏渲染，默认为 `true`
+     * @param {boolean=} options.isomorphic 是否启用同构模式，默认为 `false`
      * @param {string|Array.<string>=} options.template 通用模版
      * @param {Object=} options.templateConfig 模版引擎配置
      * @param {Object=} options.templateData 通用模版静态数据
