@@ -17,5 +17,13 @@
   },
   "repository": "git://github.com/ecomfe/saber-rainbow.git",
   "bugs": "https://github.com/ecomfe/saber-rainbow/issues",
-  "license": "MIT"
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "doc",
+    "demo"
+  ]
 }
